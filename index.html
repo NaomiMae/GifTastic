@@ -3,88 +3,115 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Animal Buttons</title>
+  <title>Artist Buttons</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
-  <div class="button-container">
-    <!-- <button data-animal="cat">meow</button>
-  <button data-animal="dog">woof</button>
-  <button data-animal="bird">chirp</button>
-  <button data-animal="pomsky">grrr</button> -->
-  </div>
-  <form>
-    <span id="todo-item">To Do Item:
-      <input id="animal-input" type="text">
-      <input id="add-animal" value="Add Item" type="submit">
-    </span>
-  </form>
-  <div id="gifs-appear-here">
-  </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script type="text/javascript">
-    var animals = ["cat", "dog", "bird", "pomsky"];
-    $(document).on("click",".furry", function () {
-      var animal = $(this).attr("data-type");
-      var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
-        animal + "&api_key=aaHZzssXSGK36loVeYs8mncNaiGSy4VS&limit=10";
-      
-      $.ajax({
-        url: queryURL,
-        method: "GET"
-      }).then(function (response) {
-        var results = response.data;
-        console.log(results);
-        for (var i = 0; i < results.length; i++) {
-          var animalDiv = $("<div>");
+  <div class="body">
+    <div id="button-container">
+    </div>
+    <form>
+      <span id="todo-item">Search Artist:
+        <input id="artist-input" type="text">
+        <input id="add-artist" value="Add Item" type="submit">
+      </span>
+    </form>
+    <div id="gifs-appear-here" class="row">
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      var artists = ["BEYONCE", "SOLANGE", "JAY Z", "DRAKE", "NICKI MINAJ", "LIL WAYNE", "ELLA MAI"];
+      $(document).on("click", ".furry", function () {
+        var artist = $(this).attr("data-type");
+        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
+          artist + "&api_key=aaHZzssXSGK36loVeYs8mncNaiGSy4VS&limit=10";
 
-          var p = $("<p>").text("Rating: " + results[i].rating);
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        }).then(function (response) {
+          var results = response.data;
+          console.log(results);
+          for (var i = 0; i < results.length; i++) {
+            var artistDiv = $("<div>");
 
-          var animalImage = $("<img>");
-          animalImage.attr("src", results[i].images.fixed_height.url);
+            var p = $("<p>").text("Rating: " + results[i].rating);
 
-          animalDiv.append(p);
-          animalDiv.append(animalImage);
+            var artistImage = $("<img>");
+            artistImage.addClass("art");
 
-          $("#gifs-appear-here").append(animalDiv);
-        }
+            artistImage.attr("src", results[i].images.fixed_height_still.url);
+            artistImage.attr("data-still", results[i].images.fixed_height_still.url);
+            artistImage.attr("data-animate", results[i].images.fixed_height.url);
+            artistImage.attr("data-state", "still");
+            artistDiv.prepend(artistImage);
+            artistDiv.prepend(p);
+
+
+            $("#gifs-appear-here").prepend(artistDiv);
+
+
+          }
+        });
+
+        $("#gifs-appear-here").on("click", ".art", function () {
+          var state = $(this).attr("data-state");
+          if (state === "still") {
+            $(this).attr("src", $(this).attr("data-animate"));
+            $(this).attr("data-state", "animate");
+          }
+          else {
+            $(this).attr("src", $(this).attr("data-still"));
+            $(this).attr("data-state", "still");
+          }
+
+        })
+
       });
-    });
 
-    function renderButtons() {
 
-      $(".button-container").empty();
+      function renderButtons() {
 
-      for (var i = 0; i < animals.length; i++) {
+        $("#button-container").empty();
 
-        var a = $("<button>");
-        // Adding a class of movie to our button
-        a.addClass("furry");
-        // Adding a data-attribute
-        a.attr("data-type", animals[i]);
-        // Providing the initial button text
-        a.text(animals[i]);
-        // Adding the button to the buttons-view div
-        $(".button-container").append(a);
+        for (var i = 0; i < artists.length; i++) {
+
+          var a = $("<button>");
+          // Adding a class of movie to our button
+          a.addClass("furry");
+          // Adding a data-attribute
+          a.attr("data-type", artists[i]);
+          // Providing the initial button text
+          a.text(artists[i]);
+          // Adding the button to the buttons-view div
+          $("#button-container").append(a);
+        }
       }
-    }
-    $("#add-animal").on("click", function (event) {
-      event.preventDefault();
-      // This line grabs the input from the textbox
-      var animal = $("#animal-input").val().trim();
-      animals.push(animal);
-      console.log(animals);
+      $("#add-artist").on("click", function (event) {
+        event.preventDefault();
+        // This line grabs the input from the textbox
+        var artist = $("#artist-input").val().trim();
+        artists.push(artist);
+        console.log(artists);
+        renderButtons();
+      });
+
+
       renderButtons();
-    });
-
-
-     renderButtons();
     // // Function for displaying the movie info
     // // Using $(document).on instead of $(".movie").on to add event listeners to dynamically generated elements
     // $(document).on("click", ".movie", displayMovieInfo);
     // // Calling the renderButtons function to display the initial buttons
     // renderButtons();
-  </script>
+    </script>
+
+  </div>
 </body>
 
 </html>
