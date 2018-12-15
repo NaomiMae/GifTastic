@@ -1,7 +1,7 @@
 var artists = ["BEYONCE", "SOLANGE", "JAY Z", "DRAKE", "NICKI MINAJ", "LIL WAYNE", "ELLA MAI","BIG SEAN"];
       $(document).on("click", ".furry", function () {
         var artist = $(this).attr("data-type");
-        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" +
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
           artist + "&api_key=aaHZzssXSGK36loVeYs8mncNaiGSy4VS&limit=10";
 // where we pull the info from our url.//
         $.ajax({
