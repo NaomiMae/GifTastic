@@ -69,4 +69,5 @@ var artists = ["BEYONCE", "SOLANGE", "JAY Z", "DRAKE", "NICKI MINAJ", "LIL WAYNE
 
 
       renderButtons();
+
    
